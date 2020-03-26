@@ -47,5 +47,5 @@ class CosimScenario(AutoInit):
             if c.source_fmu.instanceName not in self.fmu_connections.keys():
                 self.fmu_connections[c.source_fmu.instanceName] = {}
             for vr in c.source_vr:
-                assert vr not in self.fmu_connections[c.source_fmu.instanceName].keys()
+                assert vr not in self.fmu_connections[c.source_fmu.instanceName].keys(), "Duplicate vr found."
                 self.fmu_connections[c.source_fmu.instanceName][vr] = c

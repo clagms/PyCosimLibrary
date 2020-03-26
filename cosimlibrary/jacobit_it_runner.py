@@ -57,7 +57,7 @@ class JacobiIterativeRunner(CosimRunner):
                             has_converged = False
                         else:
                             previous_output_value = previous_outputs[output_index]
-                            assert len(previous_output_value) == len(new_output_value)
+                            assert len(previous_output_value) == len(new_output_value), "Output sizes must be the same"
                             if has_converged:
                                 for (po,no) in zip(previous_output_value, new_output_value):
                                     if (not np.isclose(po, no,rtol=self.tol,

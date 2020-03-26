@@ -49,7 +49,7 @@ class CosimRunner:
             # Init the modes (only for discontinuous signals)
             if ov.signal_type == SignalType.DISCONTINUOUS:
                 for vr in ov.source_vr:
-                    assert vr not in results.abstract_modes[ov.source_fmu.instanceName].keys()
+                    assert vr not in results.abstract_modes[ov.source_fmu.instanceName].keys(), "Duplicate asbtract mode found."
                     results.abstract_modes[ov.source_fmu.instanceName][vr] = []
         return results
 
