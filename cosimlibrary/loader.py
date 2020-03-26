@@ -1,9 +1,10 @@
+from cosimlibrary.autoinit import AutoInit
 from fmpy import read_model_description, extract
-from typing import Dict
-import shutil
 from fmpy.fmi2 import FMU2Slave
 from fmpy.model_description import ScalarVariable
-from cosimlibrary.autoinit import AutoInit
+from pathlib import Path
+from typing import Dict
+import shutil
 
 
 class LoadedFMU(AutoInit):
@@ -23,8 +24,17 @@ class FMULoader:
 
     @staticmethod
     def load(fmu_path, instance_name, logger):
-        unzipdir = extract(fmu_path)
-        desc = read_model_description(fmu_path)
+
+        fmu_path = Path(fmu_path)
+
+        is_compressed = fmu_path.is_file() and fmu_path.name.endswith('.fmu')
+
+        if(is_compressed):
+            unzipdir = extract(fmu_path)
+        else:
+            unzipdir = str(fmu_path)
+
+        desc = read_model_description(unzipdir)
         vars = FMULoader.get_vars(desc)
         fmu = FMU2Slave(guid=desc.guid,
                         unzipDirectory=unzipdir,
@@ -40,9 +50,3 @@ class FMULoader:
             shutil.rmtree(loaded_fmu.dir)
         except PermissionError:
             print("Warning: failed to clear directory ", loaded_fmu.dir)
-
-
-
-
-
-
