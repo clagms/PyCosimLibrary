@@ -11,6 +11,7 @@ class LoadedFMU(AutoInit):
     fmu: FMU2Slave = None
     dir: str = None
     vars: Dict[str, ScalarVariable] = None
+    cleanup: bool = None
 
 
 class FMULoader:
@@ -41,12 +42,15 @@ class FMULoader:
                         modelIdentifier=desc.coSimulation.modelIdentifier,
                         instanceName=instance_name,
                         fmiCallLogger=logger)
-        return LoadedFMU(fmu=fmu, dir=unzipdir, vars=vars)
+        return LoadedFMU(fmu=fmu, dir=unzipdir, vars=vars,cleanup = is_compressed)
 
     @staticmethod
     def unload(loaded_fmu: LoadedFMU):
+
         loaded_fmu.fmu.freeInstance()
-        try:
+
+        if(loaded_fmu.cleanup):
+            try:
             shutil.rmtree(loaded_fmu.dir)
         except PermissionError:
             print("Warning: failed to clear directory ", loaded_fmu.dir)
