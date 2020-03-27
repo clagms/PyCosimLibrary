@@ -51,6 +51,6 @@ class FMULoader:
 
         if(loaded_fmu.cleanup):
             try:
-            shutil.rmtree(loaded_fmu.dir)
-        except PermissionError:
-            print("Warning: failed to clear directory ", loaded_fmu.dir)
+                shutil.rmtree(loaded_fmu.dir)
+            except PermissionError:
+                print("Warning: failed to clear directory ", loaded_fmu.dir)
