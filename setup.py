@@ -8,10 +8,10 @@ setuptools.setup(
     version="0.0.1",
     author="Claudio Gomes",
     author_email="claudio.gomes@eng.au.dk",
-    description="TODO",
+    description="A co-simulation library with the most common master algorithms.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="TODO",
+    url="https://github.com/clagms/PyCosimLibrary",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

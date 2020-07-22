@@ -1,4 +1,4 @@
-from fmpy.fmi2 import fmi2True
+from fmpy.fmi2 import fmi2True, fmi2OK
 
 from cosimlibrary.virtual_fmus import VirtualFMU
 
@@ -42,6 +42,8 @@ class MSD1(VirtualFMU):
 
             self.state[self.x] = self.state[self.x] + der_x * h
             self.state[self.v] = self.state[self.v] + der_v * h
+
+        return fmi2OK
 
 
 class MSD2(VirtualFMU):
@@ -98,3 +100,5 @@ class MSD2(VirtualFMU):
 
             self.state[self.x] = self.state[self.x] + der_x * h
             self.state[self.v] = self.state[self.v] + der_v * h
+
+        return fmi2OK
