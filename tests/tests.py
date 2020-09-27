@@ -1,9 +1,11 @@
 import unittest
 
+from cosimlibrary.gauss_seidel_runner import GaussSeidelRunner
 from cosimlibrary.jacobi_runner import JacobiRunner
 from cosimlibrary.jacobit_it_runner import JacobiIterativeRunner
 from cosimlibrary.scenario import Connection, VarType, SignalType, OutputConnection, CosimScenario
 from cosimlibrary.double_msd.fmus import *
+
 
 class CosimTestSuite(unittest.TestCase):
     """Basic test cases."""
@@ -64,6 +66,22 @@ class CosimTestSuite(unittest.TestCase):
         jacobi = JacobiRunner()
 
         results = jacobi.run_cosim(scenario, lambda t: None)
+
+        for f in scenario.fmus:
+            f.terminate()
+
+        msd1 = next(f for f in scenario.fmus if f.instanceName == "msd1")
+        msd2 = next(f for f in scenario.fmus if f.instanceName == "msd2")
+
+        self.assertTrue(results.timestamps[-1] > 6.0)
+        self.assertTrue(results.signals[msd1.instanceName][msd1.x][-1] > -1.0)
+
+    def test_run_gauss_seidal(self):
+        scenario = self.build_double_msd_scenario()
+
+        runner = GaussSeidelRunner()
+
+        results = runner.run_cosim(scenario, lambda t: None)
 
         for f in scenario.fmus:
             f.terminate()

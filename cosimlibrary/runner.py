@@ -1,7 +1,8 @@
 from typing import List, Callable
 import numpy as np
 from cosimlibrary.results import CosimResults
-from cosimlibrary.scenario import CosimScenario, VarType, SignalType
+from cosimlibrary.scenario import CosimScenario, VarType, SignalType, Connection
+
 
 class CosimRunner:
     """
@@ -19,14 +20,14 @@ class CosimRunner:
         :param scenario:
         :return:
         """
-        self.propagate_outputs(scenario)
+        self.propagate_outputs(scenario.connections)
 
-    def propagate_outputs(self, scenario: CosimScenario):
+    def propagate_outputs(self, connections: List[Connection]):
         """
         For now, we use the order of the connections as an indicator for the order of output propagation.
         This means the user is responsible for providing this information.
         """
-        for c in scenario.connections:
+        for c in connections:
             if c.target_fmu is not None:
                 if c.value_type == VarType.REAL:
                     c.target_fmu.setReal(c.target_vr, c.source_fmu.getReal(c.source_vr))

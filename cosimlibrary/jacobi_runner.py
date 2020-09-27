@@ -12,4 +12,4 @@ class JacobiRunner(CosimRunner):
         for f in scenario.fmus:
             res = f.doStep(time, scenario.step_size)
             assert res == fmi2OK, "Step failed."
-        self.propagate_outputs(scenario)
+        self.propagate_outputs(scenario.connections)
