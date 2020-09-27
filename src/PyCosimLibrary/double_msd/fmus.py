@@ -1,6 +1,6 @@
 from fmpy.fmi2 import fmi2True, fmi2OK
 
-from cosimlibrary.virtual_fmus import VirtualFMU
+from PyCosimLibrary.virtual_fmus import VirtualFMU
 
 
 class MSD1(VirtualFMU):

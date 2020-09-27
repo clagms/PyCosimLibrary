@@ -1,7 +1,7 @@
 from typing import List, Callable
 import numpy as np
-from cosimlibrary.results import CosimResults
-from cosimlibrary.scenario import CosimScenario, VarType, SignalType, Connection
+from PyCosimLibrary.results import CosimResults
+from PyCosimLibrary.scenario import CosimScenario, VarType, SignalType, Connection
 
 
 class CosimRunner:

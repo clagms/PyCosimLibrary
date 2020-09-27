@@ -1,10 +1,10 @@
 import unittest
 
-from cosimlibrary.gauss_seidel_runner import GaussSeidelRunner
-from cosimlibrary.jacobi_runner import JacobiRunner
-from cosimlibrary.jacobit_it_runner import JacobiIterativeRunner
-from cosimlibrary.scenario import Connection, VarType, SignalType, OutputConnection, CosimScenario
-from cosimlibrary.double_msd.fmus import *
+from PyCosimLibrary.gauss_seidel_runner import GaussSeidelRunner
+from PyCosimLibrary.jacobi_runner import JacobiRunner
+from PyCosimLibrary.jacobit_it_runner import JacobiIterativeRunner
+from PyCosimLibrary.scenario import Connection, VarType, SignalType, OutputConnection, CosimScenario
+from PyCosimLibrary.double_msd.fmus import *
 
 
 class CosimTestSuite(unittest.TestCase):

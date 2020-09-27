@@ -1,4 +1,4 @@
-from cosimlibrary.autoinit import AutoInit
+from PyCosimLibrary.autoinit import AutoInit
 from fmpy import read_model_description, extract
 from fmpy.fmi2 import FMU2Slave
 from fmpy.model_description import ScalarVariable

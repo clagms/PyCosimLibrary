@@ -1,7 +1,7 @@
 from fmpy.fmi2 import fmi2OK
 
-from cosimlibrary.runner import CosimRunner
-from cosimlibrary.scenario import CosimScenario
+from PyCosimLibrary.runner import CosimRunner
+from PyCosimLibrary.scenario import CosimScenario
 
 
 class JacobiRunner(CosimRunner):

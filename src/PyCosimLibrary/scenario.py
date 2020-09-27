@@ -1,7 +1,7 @@
 from enum import Enum,auto
 from typing import List, Dict, Callable, Tuple
 from fmpy.fmi2 import FMU2Slave
-from cosimlibrary.autoinit import AutoInit
+from PyCosimLibrary.autoinit import AutoInit
 
 
 class VarType(Enum):

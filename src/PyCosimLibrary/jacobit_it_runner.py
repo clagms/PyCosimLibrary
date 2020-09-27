@@ -1,8 +1,9 @@
 from typing import List
 
-from cosimlibrary.runner import CosimRunner
-from cosimlibrary.scenario import CosimScenario, VarType
+from PyCosimLibrary.runner import CosimRunner
+from PyCosimLibrary.scenario import CosimScenario, VarType
 import numpy as np
+
 
 class JacobiIterativeRunner(CosimRunner):
     def __init__(self, max_iterations: int, tol: float):
@@ -59,9 +60,9 @@ class JacobiIterativeRunner(CosimRunner):
                             previous_output_value = previous_outputs[output_index]
                             assert len(previous_output_value) == len(new_output_value), "Output sizes must be the same"
                             if has_converged:
-                                for (po,no) in zip(previous_output_value, new_output_value):
-                                    if (not np.isclose(po, no,rtol=self.tol,
-                                                            atol=self.tol)):
+                                for (po, no) in zip(previous_output_value, new_output_value):
+                                    if (not np.isclose(po, no, rtol=self.tol,
+                                                       atol=self.tol)):
                                         has_converged = False
                         output_index += 1
                     else:
@@ -76,5 +77,5 @@ class JacobiIterativeRunner(CosimRunner):
             has_converged = has_converged or iteration_count > self.max_iterations
             if not has_converged:
                 # Rollback and Repeat if necessary
-                for (f,s) in old_states:
+                for (f, s) in old_states:
                     f.setFMUstate(s)

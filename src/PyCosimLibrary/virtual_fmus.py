@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import List
 
 from fmpy.fmi2 import FMU2Slave, fmi2OK, fmi2True
 
