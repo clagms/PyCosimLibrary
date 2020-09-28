@@ -78,8 +78,6 @@ class CosimTestSuite(unittest.TestCase):
         self.assertTrue(results.timestamps[-1] > 6.0)
         self.assertTrue(results.out_signals[msd1.instanceName][msd1.x][-1] > -1.0)
 
-
-
     def test_run_gauss_seidal(self):
         scenario = self.build_double_msd_scenario()
 
