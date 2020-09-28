@@ -1,5 +1,7 @@
 from typing import List, Callable
 import numpy as np
+from fmpy.fmi2 import FMU2Slave
+
 from PyCosimLibrary.results import CosimResults
 from PyCosimLibrary.scenario import CosimScenario, VarType, SignalType, Connection
 
@@ -34,8 +36,7 @@ class CosimRunner:
                 else:
                     c.target_fmu.setBoolean(c.target_vr, c.source_fmu.getBoolean(c.source_vr))
 
-    def init_results(self, scenario: CosimScenario):
-        results = CosimResults()
+    def init_results(self, scenario: CosimScenario, results = CosimResults()):
         results.timestamps = []
 
         # Output signals store the outputs of the FMU at the end of the cosim step.
@@ -63,20 +64,27 @@ class CosimRunner:
 
         return results
 
+    def get_fmu_vars(self, fmu: FMU2Slave, vrs: List[int], type: VarType):
+        if type == VarType.REAL:
+            values = fmu.getReal(vrs)
+        else:
+            values = fmu.getBoolean(vrs)
+        return values
+
     def snapshot(self, time: float, scenario: CosimScenario, results: CosimResults):
         results.timestamps.append(time)
         for ov in scenario.outputs:
-            values: List = None
-            if ov.value_type == VarType.REAL:
-                values = ov.source_fmu.getReal(ov.source_vr)
-            else:
-                values = ov.source_fmu.getBoolean(ov.source_vr)
+
+            # Get values from FMU and place them in the corresponding signal streams
+            values = self.get_fmu_vars(ov.source_fmu, ov.source_vr, ov.value_type)
+
             # Each item with index i in values corresponds to the value of item with index i in ov.source_vr
             for i in range(len(values)):
                 value_append = values[i]
                 vr: int = ov.source_vr[i]
                 signal = results.out_signals[ov.source_fmu.instanceName][vr]
                 signal.append(value_append)
+
             # Aggregate modes
             if ov.signal_type == SignalType.DISCONTINUOUS:
                 # If last known mode has changed (modulo quantization_tol), then it's a new mode.
@@ -130,6 +138,14 @@ class CosimRunner:
                     "Invalid Scenario. Connection {} points to an FMU ({}) not contained in the list of given FMUs ({}).".format(
                         connection, connection.target_fmu, scenario.fmus))
 
+    def terminate_cosim(self, scenario: CosimScenario):
+        """
+        To be inherited by custom runners.
+        :param scenario:
+        :return:
+        """
+        pass
+
     def run_cosim(self, scenario: CosimScenario, status: Callable):
 
         self.valid_scenario(scenario)
@@ -168,5 +184,7 @@ class CosimRunner:
                     status(time)
                 self.snapshot(time, scenario, results)
                 print_counter = print_frequency
+
+        self.terminate_cosim(scenario)
 
         return results
