@@ -60,7 +60,7 @@ class CosimTestSuite(unittest.TestCase):
         msd2 = next(f for f in scenario.fmus if f.instanceName == "msd2")
 
         self.assertTrue(results.timestamps[-1] > 6.0)
-        self.assertTrue(results.signals[msd1.instanceName][msd1.x][-1] > -1.0)
+        self.assertTrue(results.out_signals[msd1.instanceName][msd1.x][-1] > -1.0)
 
     def test_run_jacobi(self):
         scenario = self.build_double_msd_scenario()
@@ -76,13 +76,8 @@ class CosimTestSuite(unittest.TestCase):
         msd2 = next(f for f in scenario.fmus if f.instanceName == "msd2")
 
         self.assertTrue(results.timestamps[-1] > 6.0)
-        self.assertTrue(results.signals[msd1.instanceName][msd1.x][-1] > -1.0)
+        self.assertTrue(results.out_signals[msd1.instanceName][msd1.x][-1] > -1.0)
 
-        plt.figure()
-        plt.plot(results.timestamps, results.signals[msd1.instanceName][msd1.x], label="x1")
-        plt.plot(results.timestamps, results.signals[msd2.instanceName][msd2.x], label="x2")
-        plt.legend()
-        plt.show()
 
 
     def test_run_gauss_seidal(self):
@@ -99,7 +94,7 @@ class CosimTestSuite(unittest.TestCase):
         msd2 = next(f for f in scenario.fmus if f.instanceName == "msd2")
 
         self.assertTrue(results.timestamps[-1] > 6.0)
-        self.assertTrue(results.signals[msd1.instanceName][msd1.x][-1] > -1.0)
+        self.assertTrue(results.out_signals[msd1.instanceName][msd1.x][-1] > -1.0)
 
 
 if __name__ == '__main__':

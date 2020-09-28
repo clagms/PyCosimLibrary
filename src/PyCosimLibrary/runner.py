@@ -37,25 +37,30 @@ class CosimRunner:
     def init_results(self, scenario: CosimScenario):
         results = CosimResults()
         results.timestamps = []
-        results.signals = {}
+
+        # Output signals store the outputs of the FMU at the end of the cosim step.
+        results.out_signals = {}
+
         results.abstract_modes = {}
 
         for ov in scenario.outputs:
-            if ov.source_fmu.instanceName not in results.signals.keys():
+            # Store the output signals
+            if ov.source_fmu.instanceName not in results.out_signals.keys():
                 assert ov.source_fmu.instanceName not in results.abstract_modes.keys(), \
                     "Using duplicate connections for output is not allowed."
-                results.signals[ov.source_fmu.instanceName] = {}
+                results.out_signals[ov.source_fmu.instanceName] = {}
                 results.abstract_modes[ov.source_fmu.instanceName] = {}
             for vr in ov.source_vr:
-                assert vr not in results.signals[ov.source_fmu.instanceName].keys(), \
+                assert vr not in results.out_signals[ov.source_fmu.instanceName].keys(), \
                     "Using duplicate connections for output is not allowed."
-                results.signals[ov.source_fmu.instanceName][vr] = []
-            # Init the modes (only for discontinuous signals)
+                results.out_signals[ov.source_fmu.instanceName][vr] = []
+            # Init the modes (only for discontinuous out_signals)
             if ov.signal_type == SignalType.DISCONTINUOUS:
                 for vr in ov.source_vr:
                     assert vr not in results.abstract_modes[ov.source_fmu.instanceName].keys(), \
                         "Duplicate abstract mode found."
                     results.abstract_modes[ov.source_fmu.instanceName][vr] = []
+
         return results
 
     def snapshot(self, time: float, scenario: CosimScenario, results: CosimResults):
@@ -70,7 +75,7 @@ class CosimRunner:
             for i in range(len(values)):
                 value_append = values[i]
                 vr: int = ov.source_vr[i]
-                signal = results.signals[ov.source_fmu.instanceName][vr]
+                signal = results.out_signals[ov.source_fmu.instanceName][vr]
                 signal.append(value_append)
             # Aggregate modes
             if ov.signal_type == SignalType.DISCONTINUOUS:
