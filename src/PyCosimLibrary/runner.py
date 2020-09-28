@@ -39,22 +39,26 @@ class CosimRunner:
         results.timestamps = []
         results.signals = {}
         results.abstract_modes = {}
+
         for ov in scenario.outputs:
             if ov.source_fmu.instanceName not in results.signals.keys():
-                assert ov.source_fmu.instanceName not in results.abstract_modes.keys(), "Using duplicate connections for output is not allowed."
+                assert ov.source_fmu.instanceName not in results.abstract_modes.keys(), \
+                    "Using duplicate connections for output is not allowed."
                 results.signals[ov.source_fmu.instanceName] = {}
                 results.abstract_modes[ov.source_fmu.instanceName] = {}
             for vr in ov.source_vr:
-                assert vr not in results.signals[ov.source_fmu.instanceName].keys(), "Using duplicate connections for output is not allowed."
+                assert vr not in results.signals[ov.source_fmu.instanceName].keys(), \
+                    "Using duplicate connections for output is not allowed."
                 results.signals[ov.source_fmu.instanceName][vr] = []
             # Init the modes (only for discontinuous signals)
             if ov.signal_type == SignalType.DISCONTINUOUS:
                 for vr in ov.source_vr:
-                    assert vr not in results.abstract_modes[ov.source_fmu.instanceName].keys(), "Duplicate asbtract mode found."
+                    assert vr not in results.abstract_modes[ov.source_fmu.instanceName].keys(), \
+                        "Duplicate abstract mode found."
                     results.abstract_modes[ov.source_fmu.instanceName][vr] = []
         return results
 
-    def snapshot(self, time:float, scenario: CosimScenario, results: CosimResults):
+    def snapshot(self, time: float, scenario: CosimScenario, results: CosimResults):
         results.timestamps.append(time)
         for ov in scenario.outputs:
             values: List = None
@@ -69,8 +73,8 @@ class CosimRunner:
                 signal = results.signals[ov.source_fmu.instanceName][vr]
                 signal.append(value_append)
             # Aggregate modes
-            if ov.signal_type==SignalType.DISCONTINUOUS:
-                # If last known mode has changed (module quantization_tol), then it's a new mode.
+            if ov.signal_type == SignalType.DISCONTINUOUS:
+                # If last known mode has changed (modulo quantization_tol), then it's a new mode.
                 for i in range(len(values)):
                     current_mode = values[i]
                     vr: int = ov.source_vr[i]
@@ -87,11 +91,12 @@ class CosimRunner:
         if end_connection is None:
             assert scenario.stop_time > 0.0
             return (time + scenario.step_size <= scenario.stop_time) or \
-                   np.isclose(time + scenario.step_size, scenario.stop_time, rtol=scenario.step_size * 1e-03, atol=scenario.step_size * 1e-03)
+                   np.isclose(time + scenario.step_size, scenario.stop_time, rtol=scenario.step_size * 1e-03,
+                              atol=scenario.step_size * 1e-03)
 
         last_value = end_connection.source_fmu.getReal(end_connection.source_vr)[0]
         return last_value > 0.0 and not \
-            np.isclose(last_value, 0.0, rtol=scenario.step_size*1e-3, atol=scenario.step_size*1e-3)
+            np.isclose(last_value, 0.0, rtol=scenario.step_size * 1e-3, atol=scenario.step_size * 1e-3)
 
     def run_cosim_step(self, time, scenario: CosimScenario):
         """
@@ -119,7 +124,7 @@ class CosimRunner:
                 raise ValueError(
                     "Invalid Scenario. Connection {} points to an FMU ({}) not contained in the list of given FMUs ({}).".format(
                         connection, connection.target_fmu, scenario.fmus))
-            
+
     def run_cosim(self, scenario: CosimScenario, status: Callable):
 
         self.valid_scenario(scenario)
@@ -127,9 +132,8 @@ class CosimRunner:
         # Init results
         results = self.init_results(scenario)
 
-
         for f in scenario.fmus:
-            f.setupExperiment(None, 0.0, scenario.stop_time if scenario.stop_time>0.0 else 0.0)
+            f.setupExperiment(None, 0.0, scenario.stop_time if scenario.stop_time > 0.0 else 0.0)
             f.enterInitializationMode()
 
         for f, (vrs, vals) in scenario.real_parameters.items():

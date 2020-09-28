@@ -34,6 +34,7 @@ class CosimScenario(AutoInit):
     stop_time: float = -1.0
     stop_condition: Connection = None
     print_interval: int = 1e-2
+    record_inputs: bool = False
     outputs: List[OutputConnection] = None
     real_parameters: Dict[FMU2Slave, Tuple[List[int], List[float]]] = {}
     fmu_connections: Dict[str, Dict[int, Connection]]

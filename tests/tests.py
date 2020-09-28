@@ -5,6 +5,7 @@ from PyCosimLibrary.jacobi_runner import JacobiRunner
 from PyCosimLibrary.jacobit_it_runner import JacobiIterativeRunner
 from PyCosimLibrary.scenario import Connection, VarType, SignalType, OutputConnection, CosimScenario
 from PyCosimLibrary.double_msd.fmus import *
+import matplotlib.pyplot as plt
 
 
 class CosimTestSuite(unittest.TestCase):
@@ -41,6 +42,7 @@ class CosimTestSuite(unittest.TestCase):
             step_size=0.01,
             print_interval=0.1,
             stop_time=7.0,
+            record_inputs=True,
             outputs=out_connections)
         return scenario
 
@@ -75,6 +77,13 @@ class CosimTestSuite(unittest.TestCase):
 
         self.assertTrue(results.timestamps[-1] > 6.0)
         self.assertTrue(results.signals[msd1.instanceName][msd1.x][-1] > -1.0)
+
+        plt.figure()
+        plt.plot(results.timestamps, results.signals[msd1.instanceName][msd1.x], label="x1")
+        plt.plot(results.timestamps, results.signals[msd2.instanceName][msd2.x], label="x2")
+        plt.legend()
+        plt.show()
+
 
     def test_run_gauss_seidal(self):
         scenario = self.build_double_msd_scenario()
