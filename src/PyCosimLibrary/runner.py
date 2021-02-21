@@ -36,7 +36,10 @@ class CosimRunner:
                 else:
                     c.target_fmu.setBoolean(c.target_vr, c.source_fmu.getBoolean(c.source_vr))
 
-    def init_results(self, scenario: CosimScenario, results = CosimResults()):
+    def init_results(self, scenario: CosimScenario, results=None):
+        if results is None:
+            results = CosimResults()
+
         results.timestamps = []
 
         # Output signals store the outputs of the FMU at the end of the cosim step.

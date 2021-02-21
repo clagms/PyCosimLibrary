@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyCosimLibrary",
-    version="0.0.4",
+    version="0.0.5",
     author="Claudio Gomes",
     author_email="claudio.gomes@eng.au.dk",
     description="A co-simulation library with the most common master algorithms.",
@@ -17,6 +17,9 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
+    ],
+    install_requires=[
+        'fmpy'
     ],
     python_requires='>=3.6',
 )
