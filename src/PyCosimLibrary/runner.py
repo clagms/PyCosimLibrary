@@ -173,9 +173,9 @@ class CosimRunner:
         print_frequency = int(scenario.print_interval / scenario.step_size)
         print_counter = print_frequency
 
+        # Take output snapshot for time 0
         self.snapshot(time, scenario, results)
         should_continue = self.should_continue(scenario, time)
-        # TODO: Take output snapshot
         while should_continue:
             self.run_cosim_step(time, scenario)
 
