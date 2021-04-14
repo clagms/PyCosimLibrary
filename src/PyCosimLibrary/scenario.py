@@ -20,9 +20,22 @@ class Connection(AutoInit):
     target_fmu: FMU2Slave = None
     source_vr: List[int] = None
     target_vr: List[int] = None
+    
+    def __init__(self, **args):
+        super(Connection, self).__init__(**args)
+
+    def __str__(self):
+        string_repr = []
+        for (src, trg) in zip(self.source_vr, self.target_vr):
+            string_repr.append(f"{self.source_fmu.instanceName}.{src}->{self.target_fmu.instanceName}.{trg}")
+        return f"[{', '.join(string_repr)}]"
 
 class OutputConnection(Connection):
-    pass
+    def __str__(self):
+        string_repr = []
+        for src in self.source_vr:
+            string_repr.append(f"{self.source_fmu.instanceName}.{src}->Out")
+        return f"[{', '.join(string_repr)}]"
 
 class CosimScenario(AutoInit):
     """
@@ -48,5 +61,6 @@ class CosimScenario(AutoInit):
             if c.source_fmu.instanceName not in self.fmu_connections.keys():
                 self.fmu_connections[c.source_fmu.instanceName] = {}
             for vr in c.source_vr:
-                assert vr not in self.fmu_connections[c.source_fmu.instanceName].keys(), "Duplicate vr found."
+                if (vr in self.fmu_connections[c.source_fmu.instanceName].keys()):
+                    raise ValueError(f"Connection found with duplicate value reference {vr}: {c}")
                 self.fmu_connections[c.source_fmu.instanceName][vr] = c

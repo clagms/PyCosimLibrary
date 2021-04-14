@@ -135,11 +135,11 @@ class CosimRunner:
             if connection.source_fmu not in set_fmus:
                 raise ValueError(
                     "Invalid Scenario. Connection {} points to an FMU ({}) not contained in the list of given FMUs ({}).".format(
-                        connection, connection.source_fmu, scenario.fmus))
+                        connection, connection.source_fmu, ",".join(map(lambda f: f.instanceName, scenario.fmus))))
             if connection.target_fmu not in set_fmus:
                 raise ValueError(
-                    "Invalid Scenario. Connection {} points to an FMU ({}) not contained in the list of given FMUs ({}).".format(
-                        connection, connection.target_fmu, scenario.fmus))
+                    "Invalid Scenario. Connection {} points to an FMU ({}) not contained in the list of given FMUs [{}].".format(
+                        connection, connection.target_fmu, ",".join(map(lambda f: f.instanceName, scenario.fmus))))
 
     def terminate_cosim(self, scenario: CosimScenario):
         """
