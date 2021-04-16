@@ -158,10 +158,12 @@ class CosimRunner:
 
         for f in scenario.fmus:
             f.setupExperiment(None, 0.0, scenario.stop_time if scenario.stop_time > 0.0 else 0.0)
-            f.enterInitializationMode()
 
         for f, (vrs, vals) in scenario.real_parameters.items():
             f.setReal(vrs, vals)
+
+        for f in scenario.fmus:
+            f.enterInitializationMode()
 
         # TODO Support fixed point iteration initialization
         self.propagate_initial_outputs(scenario)
