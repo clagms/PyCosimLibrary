@@ -5,7 +5,6 @@ from PyCosimLibrary.jacobi_runner import JacobiRunner
 from PyCosimLibrary.jacobit_it_runner import JacobiIterativeRunner
 from PyCosimLibrary.scenario import Connection, VarType, SignalType, OutputConnection, CosimScenario
 from PyCosimLibrary.double_msd.fmus import *
-import matplotlib.pyplot as plt
 
 
 class CosimTestSuite(unittest.TestCase):
