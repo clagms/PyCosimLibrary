@@ -79,3 +79,5 @@ class JacobiIterativeRunner(CosimRunner):
                 # Rollback and Repeat if necessary
                 for (f, s) in old_states:
                     f.setFMUstate(s)
+            elif iteration_count > self.max_iterations:
+                print(f"Warning: not converged after {self.max_iterations} iterations.")
