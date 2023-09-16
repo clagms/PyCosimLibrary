@@ -6,17 +6,17 @@ from PyCosimLibrary.virtual_fmus import VirtualFMU
 class MSD1(VirtualFMU):
     def __init__(self, instanceName):
         ref = 0
-        self.x = ref;
+        self.x = ref
         ref += 1
-        self.v = ref;
+        self.v = ref
         ref += 1
-        self.m = ref;
+        self.m = ref
         ref += 1
-        self.c = ref;
+        self.c = ref
         ref += 1
-        self.cf = ref;
+        self.cf = ref
         ref += 1
-        self.fe = ref;
+        self.fe = ref
         ref += 1
 
         super().__init__(instanceName, ref)
@@ -49,25 +49,25 @@ class MSD1(VirtualFMU):
 class MSD2(VirtualFMU):
     def __init__(self, instanceName):
         ref = 0
-        self.x = ref;
+        self.x = ref
         ref += 1
-        self.v = ref;
+        self.v = ref
         ref += 1
-        self.m = ref;
+        self.m = ref
         ref += 1
-        self.c = ref;
+        self.c = ref
         ref += 1
-        self.cf = ref;
+        self.cf = ref
         ref += 1
-        self.ce = ref;
+        self.ce = ref
         ref += 1
-        self.cef = ref;
+        self.cef = ref
         ref += 1
-        self.fe = ref;
+        self.fe = ref
         ref += 1
-        self.xe = ref;
+        self.xe = ref
         ref += 1
-        self.ve = ref;
+        self.ve = ref
         ref += 1
 
         super().__init__(instanceName, ref)
