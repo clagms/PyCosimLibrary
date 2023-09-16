@@ -10,7 +10,7 @@ from PyCosimLibrary.double_msd.fmus import *
 class CosimTestSuite(unittest.TestCase):
     """Basic test cases."""
 
-    def build_double_msd_scenario(self):
+    def build_double_msd_scenario(self, ce, cef):
         msd1 = MSD1("msd1")
         msd1.instantiate()
         msd2 = MSD2("msd2")
@@ -35,6 +35,9 @@ class CosimTestSuite(unittest.TestCase):
 
         connections = [msd1_out, msd1_in]
         out_connections = [msd1_out, msd1_in, msd2_out]
+        parameters = {
+            msd2: ([msd2.ce, msd2.cef], [ce, cef])
+        }
         scenario = CosimScenario(
             fmus=[msd1, msd2],
             connections=connections,
@@ -46,7 +49,7 @@ class CosimTestSuite(unittest.TestCase):
         return scenario
 
     def test_run_dmsd_jacobiIt(self):
-        scenario = self.build_double_msd_scenario()
+        scenario = self.build_double_msd_scenario(1.0, 1.0)
 
         runner = JacobiIterativeRunner(100, 1e-4)
 
@@ -62,7 +65,7 @@ class CosimTestSuite(unittest.TestCase):
         self.assertTrue(results.out_signals[msd1.instanceName][msd1.x][-1] > -1.0)
 
     def test_run_jacobi(self):
-        scenario = self.build_double_msd_scenario()
+        scenario = self.build_double_msd_scenario(1.0, 1.0)
 
         jacobi = JacobiRunner()
 
@@ -78,7 +81,7 @@ class CosimTestSuite(unittest.TestCase):
         self.assertTrue(results.out_signals[msd1.instanceName][msd1.x][-1] > -1.0)
 
     def test_run_gauss_seidal(self):
-        scenario = self.build_double_msd_scenario()
+        scenario = self.build_double_msd_scenario(1.0, 1.0)
 
         runner = GaussSeidelRunner()
 
